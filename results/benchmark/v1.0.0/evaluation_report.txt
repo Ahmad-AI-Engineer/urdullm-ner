@@ -1,0 +1,38 @@
+========================================================================
+QWEN URDU NER — FULL EVALUATION REPORT
+========================================================================
+Requested Model:           Qwen/Qwen3.5-9B:cheapest
+Returned Model(s):         Qwen/Qwen3.5-9B
+Prompt Version:            qwen-urdu-ner-v1-frozen
+Temperature:               0
+Thinking Enabled:          False
+Batch Size:                4
+
+TEST SET
+Test sentences:            56
+Gold entity spans:         110
+
+EXACT ENTITY RESULTS  <-- PRIMARY
+Entity precision:          91.5%
+Entity recall:             88.2%
+Entity F1:                 89.8%
+Correct entity spans:      97
+False-positive spans:      9
+Missed/wrong spans:        13
+
+PER-CLASS EXACT ENTITY RESULTS
+Class             Precision     Recall         F1    Support
+------------------------------------------------------------
+PERSON                80.0%      80.0%      80.0%         20
+LOCATION              92.1%     100.0%      95.9%         35
+ORGANIZATION          94.7%      94.7%      94.7%         19
+DATE                 100.0%     100.0%     100.0%          9
+TIME                  85.7%      85.7%      85.7%          7
+NUMBER               100.0%     100.0%     100.0%          8
+DESIGNATION          100.0%      41.7%      58.8%         12
+
+BASELINE COMPARISON
+LughaatNLP exact Entity F1: 54.0%
+Qwen exact Entity F1:       89.8%
+Difference:                 +35.8 percentage points
+========================================================================

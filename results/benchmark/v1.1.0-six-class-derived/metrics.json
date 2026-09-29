@@ -1,0 +1,19 @@
+{
+  "scope": "6-class derived from previous 7-class prediction run",
+  "classes": [
+    "PERSON",
+    "LOCATION",
+    "ORGANIZATION",
+    "DATE",
+    "TIME",
+    "NUMBER"
+  ],
+  "excluded_class": "DESIGNATION",
+  "correct_entity_spans": 92,
+  "false_positive_spans": 9,
+  "missed_spans": 6,
+  "precision": 91.1,
+  "recall": 93.9,
+  "f1": 92.5,
+  "is_fresh_rerun": false
+}

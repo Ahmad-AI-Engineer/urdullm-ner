@@ -1,0 +1,28 @@
+========================================================================
+QWEN URDU NER — 6-CLASS DERIVED BENCHMARK
+========================================================================
+Scope:                     PERSON, LOCATION, ORGANIZATION, DATE, TIME, NUMBER
+Excluded class:            DESIGNATION
+
+Source:
+This figure is recalculated from the completed 7-class prediction run by
+excluding DESIGNATION gold/predicted spans. It is useful as a scoped comparison,
+but the included run_benchmark.py script should be used for the official 6-class
+rerun because the model prompt taxonomy is now also restricted to six classes.
+
+DERIVED EXACT ENTITY RESULTS
+Correct entity spans:      92
+False-positive spans:      9
+Missed/wrong spans:        6
+
+Entity precision:          91.1%
+Entity recall:             93.9%
+Entity F1:                 92.5%
+
+HISTORICAL 7-CLASS RESULT
+Entity F1:                 89.8%
+
+IMPORTANT
+Do not describe the 92.5% number as a fresh model rerun until
+scripts/run_benchmark.py has been executed successfully.
+========================================================================

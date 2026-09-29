@@ -1,0 +1,43 @@
+# Environment
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime cache
+cache/*
+!cache/.gitkeep
+
+# Demo run logs
+results/demo_runs/**
+!results/demo_runs/.gitkeep
+results/latest_run.json
+
+# Logs
+*.log
+logs/
+.coverage
+htmlcov/
+
+# Build/package
+build/
+dist/
+*.egg-info/

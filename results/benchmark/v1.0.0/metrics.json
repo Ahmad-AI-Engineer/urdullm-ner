@@ -1,0 +1,23 @@
+{
+  "app_version": "1.0.0",
+  "model_requested": "Qwen/Qwen3.5-9B:cheapest",
+  "model_returned": "Qwen/Qwen3.5-9B",
+  "prompt_version": "qwen-urdu-ner-v1-frozen",
+  "temperature": 0,
+  "thinking_enabled": false,
+  "test_sentences": 56,
+  "gold_entity_spans": 110,
+  "precision": 91.5,
+  "recall": 88.2,
+  "f1": 89.8,
+  "lughaatnlp_baseline_f1": 54.0,
+  "per_class_f1": {
+    "PERSON": 80.0,
+    "LOCATION": 95.9,
+    "ORGANIZATION": 94.7,
+    "DATE": 100.0,
+    "TIME": 85.7,
+    "NUMBER": 100.0,
+    "DESIGNATION": 58.8
+  }
+}

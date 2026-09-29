@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AI-powered Urdu Named Entity Recognition demo." />
+    <title>Urdu NER — AI Entity Intelligence</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <style>
+        html { background:#090b0a; }
+        body {
+            margin:0;
+            background:#090b0a;
+            color:#f1ede2;
+            font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+        }
+        textarea,
+        .example-urdu,
+        .highlighted-output,
+        .urdu-word,
+        .urdu-caption {
+            font-family: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq",
+                         "Noto Naskh Arabic", "Segoe UI", serif;
+        }
+        .reveal {
+            opacity:1 !important;
+            transform:none !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <div class="noise"></div>
+
+    <header class="topbar shell">
+        <div class="brand">
+            <div class="brand-mark">
+                <span>ن</span>
+            </div>
+            <div>
+                <div class="brand-name">Urdu NER</div>
+                <div class="brand-kicker">Entity Intelligence</div>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <span class="status-pill">
+                <span class="status-dot"></span>
+                Model Ready
+            </span>
+            <span class="version-pill">v1.1.0</span>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero shell">
+            <div class="hero-copy reveal">
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    AI-powered Urdu language intelligence
+                </div>
+
+                <h1>
+                    Discover meaning
+                    <span>inside Urdu text.</span>
+                </h1>
+
+                <p>
+                    Identify people, places, organizations, dates, time and numbers from Urdu text with a modern AI-powered NER engine.
+                </p>
+
+                <div class="hero-badges">
+                    <span>FastAPI</span>
+                    <span>Qwen 3.5</span>
+                    <span>Structured AI</span>
+                    <span>6 Entity Types</span>
+                </div>
+            </div>
+
+            <div class="urdu-orbit reveal delay-1" aria-hidden="true">
+                <div class="orbit-ring ring-one"></div>
+                <div class="orbit-ring ring-two"></div>
+
+                <div class="urdu-core">
+                    <div class="urdu-word">شناخت</div>
+                    <div class="urdu-caption">نام • مقام • ادارہ</div>
+                </div>
+
+                <div class="float-chip chip-a">PERSON</div>
+                <div class="float-chip chip-b">LOCATION</div>
+                <div class="float-chip chip-c">DATE</div>
+            </div>
+        </section>
+
+        <section class="workspace shell reveal delay-2">
+            <div class="workspace-head">
+                <div>
+                    <span class="section-label">Live Analyzer</span>
+                    <h2>Paste Urdu. See the entities.</h2>
+                </div>
+
+                <div class="word-limit">
+                    <span id="wordCount">0</span> / 80 Urdu words
+                </div>
+            </div>
+
+            <div class="workspace-grid">
+                <section class="panel input-panel">
+                    <div class="panel-top">
+                        <div class="panel-title">
+                            <span class="panel-index">01</span>
+                            Input
+                        </div>
+                        <button class="ghost-button" id="clearBtn" type="button">
+                            Clear
+                        </button>
+                    </div>
+
+                    <textarea
+                        id="inputText"
+                        dir="rtl"
+                        lang="ur"
+                        spellcheck="false"
+                        placeholder="اردو جملہ یہاں لکھیں یا نیچے دی گئی مثال استعمال کریں..."
+                    ></textarea>
+
+                    <div class="input-footer">
+                        <div class="input-hint">
+                            Up to 4 sentences per request
+                        </div>
+
+                        <button class="analyze-button" id="analyzeBtn" type="button">
+                            <span class="button-shine"></span>
+                            <span class="button-label">Analyze Entities</span>
+                            <span class="button-arrow">↗</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="panel result-panel" id="resultPanel">
+                    <div class="panel-top">
+                        <div class="panel-title">
+                            <span class="panel-index">02</span>
+                            Result
+                        </div>
+
+                        <button class="ghost-button" id="copyBtn" type="button" disabled>
+                            Copy
+                        </button>
+                    </div>
+
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <h3>Your entity map will appear here</h3>
+                        <p>Analyze an Urdu sentence to reveal structured entities.</p>
+                    </div>
+
+                    <div class="result-content hidden" id="resultContent">
+                        <div class="highlighted-output" id="highlightedOutput" dir="rtl" lang="ur"></div>
+
+                        <div class="result-meta">
+                            <div>
+                                <span>Entities</span>
+                                <strong id="entityCount">0</strong>
+                            </div>
+                            <div>
+                                <span>Latency</span>
+                                <strong id="latency">—</strong>
+                            </div>
+                            <div>
+                                <span>API</span>
+                                <strong id="apiCalls">—</strong>
+                            </div>
+                            <div>
+                                <span>Cache</span>
+                                <strong id="cacheHits">—</strong>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="legend-section shell reveal">
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">Entity System</span>
+                    <h2>Six entity classes. One clean result.</h2>
+                </div>
+            </div>
+
+            <div class="legend-grid">
+                <div class="legend-card type-person">
+                    <span class="legend-dot"></span>
+                    <div>
+                        <strong>PERSON</strong>
+                        <span>Names of people</span>
+                    </div>
+                </div>
+
+                <div class="legend-card type-location">
+                    <span class="legend-dot"></span>
+                    <div>
+                        <strong>LOCATION</strong>
+                        <span>Cities & places</span>
+                    </div>
+                </div>
+
+                <div class="legend-card type-organization">
+                    <span class="legend-dot"></span>
+                    <div>
+                        <strong>ORGANIZATION</strong>
+                        <span>Companies & institutions</span>
+                    </div>
+                </div>
+
+                <div class="legend-card type-date">
+                    <span class="legend-dot"></span>
+                    <div>
+                        <strong>DATE</strong>
+                        <span>Calendar dates</span>
+                    </div>
+                </div>
+
+                <div class="legend-card type-time">
+                    <span class="legend-dot"></span>
+                    <div>
+                        <strong>TIME</strong>
+                        <span>Time expressions</span>
+                    </div>
+                </div>
+
+                <div class="legend-card type-number">
+                    <span class="legend-dot"></span>
+                    <div>
+                        <strong>NUMBER</strong>
+                        <span>Numeric entities</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="examples-section shell reveal">
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">Demo Library</span>
+                    <h2>Try a real Urdu example.</h2>
+                </div>
+                <p>Use any card to fill the analyzer instantly.</p>
+            </div>
+
+            <div class="examples-grid">
+                <button class="example-card" data-example="علی رضا نے لاہور میں گوگل کے دفتر کا دورہ کیا۔">
+                    <span class="example-number">01</span>
+                    <span class="example-type">Person • Location • Organization</span>
+                    <span class="example-urdu" dir="rtl" lang="ur">علی رضا نے لاہور میں گوگل کے دفتر کا دورہ کیا۔</span>
+                    <span class="example-action">Use example <b>↗</b></span>
+                </button>
+
+                <button class="example-card" data-example="مریم علی نے 12 جون 2026 کو کراچی میں اجلاس کیا۔">
+                    <span class="example-number">02</span>
+                    <span class="example-type">Person • Date • Location</span>
+                    <span class="example-urdu" dir="rtl" lang="ur">مریم علی نے 12 جون 2026 کو کراچی میں اجلاس کیا۔</span>
+                    <span class="example-action">Use example <b>↗</b></span>
+                </button>
+
+                <button class="example-card" data-example="مائیکروسافٹ کے 40 ملازمین نے پشاور میں ورکشاپ میں حصہ لیا۔">
+                    <span class="example-number">03</span>
+                    <span class="example-type">Organization • Number • Location</span>
+                    <span class="example-urdu" dir="rtl" lang="ur">مائیکروسافٹ کے 40 ملازمین نے پشاور میں ورکشاپ میں حصہ لیا۔</span>
+                    <span class="example-action">Use example <b>↗</b></span>
+                </button>
+
+                <button class="example-card" data-example="بابر اعظم نے 20 اکتوبر 2026 کو لاہور میں شام 5 بجے میچ کھیلا۔">
+                    <span class="example-number">04</span>
+                    <span class="example-type">Mixed Entity Example</span>
+                    <span class="example-urdu" dir="rtl" lang="ur">بابر اعظم نے 20 اکتوبر 2026 کو لاہور میں شام 5 بجے میچ کھیلا۔</span>
+                    <span class="example-action">Use example <b>↗</b></span>
+                </button>
+            </div>
+        </section>
+
+        <section class="benchmark shell reveal">
+            <div class="benchmark-card">
+                <div class="benchmark-copy">
+                    <span class="section-label">Evaluation</span>
+                    <h2>Measured, not guessed.</h2>
+                    <p>
+                        Evaluated on a manually curated 56-sentence Urdu NER benchmark
+                        containing 98 gold entity spans.
+                    </p>
+                </div>
+
+                <div class="metric-grid">
+                    <div class="metric">
+                        <strong>92.5%</strong>
+                        <span>Entity F1</span>
+                    </div>
+                    <div class="metric">
+                        <strong>91.1%</strong>
+                        <span>Precision</span>
+                    </div>
+                    <div class="metric">
+                        <strong>93.9%</strong>
+                        <span>Recall</span>
+                    </div>
+                    <div class="metric accent-metric">
+                        <strong>+38.5</strong>
+                        <span>pp vs baseline</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer shell">
+        <div>
+            Urdu NER <span>•</span> AI Language Intelligence
+        </div>
+        <div>
+            Qwen 3.5 <span>•</span> FastAPI <span>•</span> v1.1.0
+        </div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        window.APP_CONFIG = {
+            maxWords: 80,
+            maxSentences: 4
+        };
+    </script>
+    <script src="/static/js/app.js" defer></script>
+</body>
+</html>
